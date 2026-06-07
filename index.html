@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NivaranAi - Smart AI Comparison Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #0B0F19; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        .ai-card { background: rgba(17, 24, 39, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); transition: all 0.3s ease; }
+        .ai-card:hover { border-color: rgba(99, 102, 241, 0.4); transform: translateY(-2px); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0B0F19; }
+        ::-webkit-scrollbar-thumb { background: #1F2937; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="border-b border-gray-800 bg-gray-950/50 px-6 py-4 flex justify-between items-center sticky top-0 z-50 backdrop-blur-md">
+        <div class="flex items-center gap-3">
+            <div class="bg-indigo-600 p-2 rounded-lg text-white font-bold text-xl tracking-wider shadow-lg shadow-indigo-500/20">
+                Ω
+            </div>
+            <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-400 bg-clip-text text-transparent">NivaranAi</span>
+        </div>
+        <div class="text-sm text-gray-400 flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span> Cloud Engine Connected
+        </div>
+    </nav>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 md:p-6 flex flex-col gap-6">
+        
+        <!-- Main Smart Input Box -->
+        <div class="bg-gray-900/40 p-4 rounded-2xl border border-gray-800/80 shadow-2xl">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-wand-magic-sparkles absolute left-4 top-4 text-indigo-400"></i>
+                    <textarea id="userPrompt" rows="1" class="w-full bg-gray-950 border border-gray-800 rounded-xl pl-12 pr-4 py-3 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-indigo-500 resize-none text-base" placeholder="Apna topic ya sawal yahan likhein (e.g., Explain Quantum Physics in short)..."></textarea>
+                </div>
+                <button onclick="generateAnswers()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition shadow-lg shadow-indigo-600/20 active:scale-95">
+                    <span>Nivaran Karein</span> <i class="fa-solid fa-paper-plane text-sm"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- AI Models Grid Comparison (5 Splits) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 flex-1">
+            
+            <!-- ChatGPT Card -->
+            <div class="ai-card rounded-2xl p-4 flex flex-col h-[550px]">
+                <div class="flex items-center justify-between border-b border-gray-800/60 pb-3 mb-3">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-emerald-400 text-lg"></i>
+                        <h3 class="font-semibold text-gray-200">ChatGPT (GPT-4o)</h3>
+                    </div>
+                    <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full font-medium">OpenAI</span>
+                </div>
+                <div id="chatgpt-response" class="flex-1 text-sm text-gray-400 overflow-y-auto leading-relaxed whitespace-pre-line">
+                    Aapke prompt ka intezar hai...
+                </div>
+            </div>
+
+            <!-- Claude Card -->
+            <div class="ai-card rounded-2xl p-4 flex flex-col h-[550px]">
+                <div class="flex items-center justify-between border-b border-gray-800/60 pb-3 mb-3">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-feather text-orange-400 text-lg"></i>
+                        <h3 class="font-semibold text-gray-200">Claude 3.5 Sonnet</h3>
+                    </div>
+                    <span class="text-[10px] bg-orange-500/10 text-orange-400 px-2 py-0.5 rounded-full font-medium">Anthropic</span>
+                </div>
+                <div id="claude-response" class="flex-1 text-sm text-gray-400 overflow-y-auto leading-relaxed whitespace-pre-line">
+                    Aapke prompt ka intezar hai...
+                </div>
+            </div>
+
+            <!-- Gemini Card -->
+            <div class="ai-card rounded-2xl p-4 flex flex-col h-[550px]">
+                <div class="flex items-center justify-between border-b border-gray-800/60 pb-3 mb-3">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-circle-nodes text-blue-400 text-lg"></i>
+                        <h3 class="font-semibold text-gray-200">Gemini 1.5 Pro</h3>
+                    </div>
+                    <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full font-medium">Google</span>
+                </div>
+                <div id="gemini-response" class="flex-1 text-sm text-gray-400 overflow-y-auto leading-relaxed whitespace-pre-line">
+                    Aapke prompt ka intezar hai...
+                </div>
+            </div>
+
+            <!-- Grok Card -->
+            <div class="ai-card rounded-2xl p-4 flex flex-col h-[550px]">
+                <div class="flex items-center justify-between border-b border-gray-800/60 pb-3 mb-3">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-xmark text-white text-lg"></i>
+                        <h3 class="font-semibold text-gray-200">Grok 2</h3>
+                    </div>
+                    <span class="text-[10px] bg-gray-500/20 text-gray-300 px-2 py-0.5 rounded-full font-medium">xAI</span>
+                </div>
+                <div id="grok-response" class="flex-1 text-sm text-gray-400 overflow-y-auto leading-relaxed whitespace-pre-line">
+                    Aapke prompt ka intezar hai...
+                </div>
+            </div>
+
+            <!-- DeepSeek Card -->
+            <div class="ai-card rounded-2xl p-4 flex flex-col h-[550px]">
+                <div class="flex items-center justify-between border-b border-gray-800/60 pb-3 mb-3">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-brain text-cyan-400 text-lg"></i>
+                        <h3 class="font-semibold text-gray-200">DeepSeek-V3</h3>
+                    </div>
+                    <span class="text-[10px] bg-cyan-500/10 text-cyan-400 px-2 py-0.5 rounded-full font-medium">DeepSeek</span>
+                </div>
+                <div id="deepseek-response" class="flex-1 text-sm text-gray-400 overflow-y-auto leading-relaxed whitespace-pre-line">
+                    Aapke prompt ka intezar hai...
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Simple Logical Script Backend -->
+    <script>
+        function generateAnswers() {
+            const prompt = document.getElementById('userPrompt').value;
+            if (!prompt.trim()) {
+                alert("Kripya koi topic ya question dalein!");
+                return;
+            }
+
+            const models = ['chatgpt', 'claude', 'gemini', 'grok', 'deepseek'];
+            
+            models.forEach(model => {
+                document.getElementById(`${model}-response`).innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-full gap-2 text-gray-500">
+                        <i class="fa-solid fa-spinner animate-spin text-xl text-indigo-500"></i>
+                        <span>Thinking...</span>
+                    </div>
+                `;
+            });
+
+            // Abhi hum temporary mock responses set kar rahe hain testing ke liye
+            // Agle step mein hum inko real Open-Source/Free Cloud APIs se connect karenge!
+            setTimeout(() => {
+                document.getElementById('chatgpt-response').innerText = `[ChatGPT Response for: "${prompt}"]\n\nYeh OpenAI ka response hai. Yeh model text structure aur standard formatting mein kaafi accurate hota hai.`;
+                document.getElementById('claude-response').innerText = `[Claude Response for: "${prompt}"]\n\nYeh Anthropic Claude ka response hai. Yeh behad natural, creative aur human-like tone mein likhta hai.`;
+                document.getElementById('gemini-response').innerText = `[Gemini Response for: "${prompt}"]\n\nYeh Google Gemini ka response hai. Iske paas live web search aur coding logic ka behtareen access hota hai.`;
+                document.getElementById('grok-response').innerText = `[Grok Response for: "${prompt}"]\n\nYeh xAI Grok ka response hai. Yeh real-time X (Twitter) data ka use karke witty aur direct answers deta hai.`;
+                document.getElementById('deepseek-response').innerText = `[DeepSeek Response for: "${prompt}"]\n\nYeh DeepSeek ka response hai. Yeh complex logical reasoning aur code generation ko behad kam cost mein super-fast scale par handle karta hai.`;
+            }, 1500);
+        }
+    </style>
+</body>
+</html>
